@@ -15,7 +15,7 @@ RUN apt-get update \
     && apt-get update \
     && apt-get install -y locales \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
-    && apt-get install -y freeswitch-meta-all \
+    && apt-get install -y libpq-dev freeswitch-meta-all \
     && rm /etc/freeswitch/sip_profiles/*-ipv6.xml \
     && sed -i 's/value="::"/value="0.0.0.0"/g' /etc/freeswitch/autoload_configs/event_socket.conf.xml \
     && sed -i 's/<!--<param name="apply-inbound-acl" value="loopback.auto"\/>-->/<param name="apply-inbound-acl" value="any_v4.auto"\/>/g' /etc/freeswitch/autoload_configs/event_socket.conf.xml
