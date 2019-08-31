@@ -1,18 +1,20 @@
 FROM debian:stretch
 
 # Allow to pass user uid/gid at build time
-ARG USER_UID="999"
-ARG USER_GID="999"
+ARG USER_UID="500"
+ARG USER_GID="500"
 
 # Add FreeSwitch repo, add user, enable en_US.utf8 locale, install freeswitch, fix default configuration to work inside container out of the box
 RUN apt-get update \
-    && apt-get install -y gnupg2 wget \
+    && apt-get install -y --no-install-recommends gnupg2 ca-certificates wget apt-utils \
     && wget -O - https://files.freeswitch.org/repo/deb/freeswitch-1.8/fsstretch-archive-keyring.asc | apt-key add - \
     && echo "deb http://files.freeswitch.org/repo/deb/freeswitch-1.8/ stretch main" > /etc/apt/sources.list.d/freeswitch.list \
     && echo "deb-src http://files.freeswitch.org/repo/deb/freeswitch-1.8/ stretch main" >> /etc/apt/sources.list.d/freeswitch.list \
+    && echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    && wget -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+    && apt-get update \
     && groupadd -r freeswitch --gid=$USER_GID \
     && useradd -r -g freeswitch --uid=$USER_UID freeswitch \
-    && apt-get update \
     && apt-get install -y locales \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
     && apt-get install -y libpq-dev freeswitch-meta-all \
