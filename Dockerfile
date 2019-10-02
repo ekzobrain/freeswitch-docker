@@ -28,7 +28,7 @@ ENV LANG en_US.utf8
 COPY build/freeswitch.limits.conf /etc/security/limits.d/
 
 # SIP ports
-EXPOSE 5060/tcp 5060/udp 5080/tcp 5080/udp
+EXPOSE 5060/tcp 5060/udp 5070/tcp 5070/udp 5080/tcp 5080/udp
 
 # WebRTC ports
 EXPOSE 5066/tcp 7443/tcp
@@ -37,7 +37,6 @@ EXPOSE 5066/tcp 7443/tcp
 EXPOSE 8021/tcp
 
 # RTP ports
-EXPOSE 64535-65535/udp
 EXPOSE 16384-32768/udp
 
 # allow to override config files and tmp dir to get core dumps in case of crash
